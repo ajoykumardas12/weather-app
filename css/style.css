@@ -104,10 +104,5 @@ body{
     width: calc(20% - 20px);
     /* flex-grow: 1; */
 }
-.weather-forecast-item-first{
-    margin-left: 0;
-}
-.weather-forecast-item-last{
-    margin-right: 0;
-}
+
 
