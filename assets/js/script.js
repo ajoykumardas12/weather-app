@@ -12,7 +12,7 @@ let condition = document.querySelector('.weather-condition');
 
 let forecastBlock = document.querySelector('.weather-forecast');
 
-let weatherImages = [
+let weatherImagesDay = [
     {
         url: 'assets/meteocons/fill/clear-day.svg',
         ids: [800]
@@ -86,6 +86,86 @@ let weatherImages = [
         ids: [804]
     },
 ]
+let weatherImagesNight = [
+    {
+        url: 'assets/meteocons/fill/clear-night.svg',
+        ids: [800]
+    },
+    {
+        url: 'assets/meteocons/fill/partly-cloudy-night.svg',
+        ids: [803, 804]
+    },
+    {
+        url: 'assets/meteocons/fill/rain.svg',
+        ids: [500, 501, 502, 503, 504]
+    },
+    {
+        url: 'assets/meteocons/fill/thunderstorms-night.svg',
+        ids: [210, 211, 212, 221]
+    },
+    {
+        url: 'assets/meteocons/fill/thunderstorms-night-rain.svg',
+        ids: [200, 201, 202,  230, 231, 232]
+    },
+    {
+        url: 'assets/meteocons/fill/drizzle.svg',
+        ids: [300,301, 302, 310, 311, 312, 313, 314, 321]
+    },
+    {
+        url: 'assets/meteocons/fill/snow.svg',
+        ids: [600, 601, 602]
+    },
+    {
+        url: 'assets/meteocons/fill/sleet.svg',
+        ids: [611, 612, 613, 615, 616, 620, 621, 622]
+    },
+    {
+        url: 'assets/meteocons/fill/mist.svg',
+        ids: [701]
+    },
+    {
+        url: 'assets/meteocons/fill/smoke.svg',
+        ids: [711]
+    },
+    {
+        url: 'assets/meteocons/fill/haze-night.svg',
+        ids: [721]
+    },
+    {
+        url: 'assets/meteocons/fill/dust-night.svg',
+        ids: [731, 751, 761, ]
+    },
+    {
+        url: 'assets/meteocons/fill/fog-night.svg',
+        ids: [741]
+    },
+    {
+        url: 'assets/meteocons/fill/tornado.svg',
+        ids: [771, 781]
+    },
+    {
+        url: 'assets/meteocons/fill/clear-night.svg',
+        ids: [800]
+    },
+    {
+        url: 'assets/meteocons/fill/partly-cloudy-night.svg',
+        ids: [801, 802]
+    },
+    {
+        url: 'assets/meteocons/fill/cloudy.svg',
+        ids: [803]
+    },
+    {
+        url: 'assets/meteocons/fill/overcast-night.svg',
+        ids: [804]
+    },
+]
+
+function hrFromMs(duration) {
+    let hours = duration / (1000*60*60);
+    let hr = hours % 24 ;
+    return hr;
+}
 
 
 
@@ -135,7 +215,8 @@ searchCity.addEventListener('keydown', async (e) => {
 
 let date = new Date;
 let updateTodayWeather = (data) => {
-    console.log(data);
+    // console.log((data.dt)/1000*60*60);
+    // console.log(msToTime(data.dt));
     let todayweather = data.weather[0];
     city.textContent = data.name + ', ' + data.sys.country;
     day.textContent = dayOfWeek();
@@ -155,7 +236,7 @@ let updateTodayWeather = (data) => {
     pressure.textContent = data.main.pressure;
 
     temperature.textContent = data.main.temp > 0 ? 
-                    '+' + Math.round(data.main.temp) :
+                     Math.round(data.main.temp) :
                      Math.round(data.main.temp);
 
     let imgId = todayweather.id;
@@ -164,12 +245,21 @@ let updateTodayWeather = (data) => {
     let toCapitalCaseDescription = toCapitalCase(description); 
     condition.textContent = toCapitalCaseDescription;
     
-
-    weatherImages.forEach(obj => {
-        if(obj.ids.includes(imgId)) {
-            image.src = obj.url;
-        }
-    })
+    let hour = date.getHours();
+    if(hour >= 6 && hour <18) {
+        weatherImagesDay.forEach(obj => {
+            if(obj.ids.includes(imgId)) {
+                image.src = obj.url;
+            }
+        })
+    }else{
+        weatherImagesNight.forEach(obj => {
+            if(obj.ids.includes(imgId)) {
+                image.src = obj.url;
+            }
+        })
+    }
+    
 }
 
 let dayOfWeek = ( dt = new Date().getTime()) => {
@@ -195,6 +285,8 @@ async function getForecastByCityId(id) {
             daily.push(day);
         }
     })
+
+    
     return daily;
 }
 
@@ -204,7 +296,7 @@ let updateForecast = (forecast) => {
         daysWeather = day.weather[0];
         daysWeatherId = daysWeather.id;
         let iconUrl;
-        let findIconUrl = weatherImages.forEach(obj => {
+        let findIconUrl = weatherImagesDay.forEach(obj => {
             if(obj.ids.includes(daysWeatherId)) {
                 iconUrl = obj.url;
             }
@@ -253,8 +345,5 @@ searchCity.addEventListener('input', async () => {
         option.value = cities[i].matching_full_name;
         suggestions.appendChild(option);
     }
-    // console.log(result);
 }) 
-
-
 
