@@ -11,10 +11,12 @@ body{
     /* background-image: radial-gradient(circle, #1c7fc2 0%, #009cdc 28%, #0d9ade 32%, #011844 100%); */
     /* background-color: blueviolet; */
     background: rgb(138,43,226);
-background: linear-gradient(360deg, rgba(138,43,226,1) 32%, rgba(142,55,223,1) 84%);
+    background: linear-gradient(360deg, rgba(138,43,226,1) 32%, rgba(142,55,223,1) 84%);
     color: #fff;
     font-weight: 300;
     font-size: 1.5rem;
+    transition: filter 0.4s;
+    filter: blur(15px);
 }
 
 .weather{

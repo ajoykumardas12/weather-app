@@ -106,7 +106,7 @@ let weatherForTheCity = async (theCity) => {
 }
 
 let init = () => {
-    weatherForTheCity('Kolkata');
+    weatherForTheCity('Kolkata').then(() => document.body.style.filter = 'blur(0)')
 }
 init();
 
