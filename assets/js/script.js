@@ -1,4 +1,5 @@
 let searchCity = document.querySelector('.search-city');
+let suggestions = document.querySelector('#suggestions');
 
 let city = document.querySelector('.weather-city');
 let day = document.querySelector('.weather-day');
@@ -91,10 +92,36 @@ let weatherImages = [
 const apiKey = 'e27527bc4535e4b18a80d6d8647e808f';
 const weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?&units=metric&appid=' + apiKey;
 
-async function getWeatherByCityName(city){
-    let endpoint = weatherBaseEndpoint + '&q=' + city ;
-    let response = await fetch(endpoint);
+let weatherForTheCity = async (theCity) => {
+    let weather = await getWeatherByCityName(theCity);
+    if(!weather) {
+        return;
+    }
 
+    updateTodayWeather(weather);
+
+    let cityId = weather.id;
+    let forecasts = await getForecastByCityId(cityId);
+    updateForecast(forecasts);
+}
+
+let init = () => {
+    weatherForTheCity('Kolkata');
+}
+init();
+
+async function getWeatherByCityName(cityString){
+    if(cityString.includes(',')) {
+        theCity = cityString.substring(0, cityString.indexOf(',')) + cityString.substring(cityString.lastIndexOf(','));
+    } else {
+        theCity = cityString;
+    }
+    let endpoint = weatherBaseEndpoint + '&q=' + theCity ;
+    let response = await fetch(endpoint);
+    if(response.status !== 200) {
+        alert('city not found');
+        return;
+    }
     let weather = await response.json();
 
     return weather;
@@ -102,19 +129,13 @@ async function getWeatherByCityName(city){
 
 searchCity.addEventListener('keydown', async (e) => {
     if(e.keyCode === 13) {
-        let weather = await getWeatherByCityName(searchCity.value);
-        updateTodayWeather(weather);
-
-        let cityId = weather.id;
-        let forecasts = await getForecastByCityId(cityId);
-        updateForecast(forecasts);
+        weatherForTheCity(searchCity.value);
     }
 })
 
 let date = new Date;
 let updateTodayWeather = (data) => {
     console.log(data);
-    // console.log(data.weather[0].description);
     let todayweather = data.weather[0];
     city.textContent = data.name + ', ' + data.sys.country;
     day.textContent = dayOfWeek();
@@ -216,3 +237,24 @@ let toCapitalCase =(string) => {
     let joinedWords = words.join(" ");
     return joinedWords;
 }
+
+
+let cityBaseEndPoint = 'https://api.teleport.org/api/cities/?search=';
+
+searchCity.addEventListener('input', async () => {
+    let endPoint = cityBaseEndPoint + searchCity.value;
+    let result = await (await fetch(endPoint)).json();
+    suggestions.innerHTML = '';
+    let cities = result._embedded['city:search-results'];
+    let length = cities.length > 5 ? 5 : cities.length;
+
+    for(let i = 0; i < length; i++){
+        let option = document.createElement('option');
+        option.value = cities[i].matching_full_name;
+        suggestions.appendChild(option);
+    }
+    // console.log(result);
+}) 
+
+
+
