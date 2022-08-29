@@ -12,6 +12,9 @@ let condition = document.querySelector('.weather-condition');
 
 let forecastBlock = document.querySelector('.weather-forecast');
 
+let alertContainer = document.querySelector('.alert-container');
+let closeAlertButton = document.querySelector('.close-button');
+
 let weatherImagesDay = [
     {
         url: 'assets/meteocons/fill/clear-day.svg',
@@ -167,6 +170,17 @@ function hrFromMs(duration) {
     return hr;
 }
 
+//alert box - city not found
+let cityNotFound = () => {
+    alertContainer.classList.remove('no-display');
+    alertContainer.classList.remove('hide');
+    alertContainer.classList.add('show');
+
+    closeAlertButton.addEventListener("click", () => {
+        alertContainer.classList.remove('show');
+        alertContainer.classList.add('hide');
+    });
+};
 
 
 const apiKey = 'e27527bc4535e4b18a80d6d8647e808f';
@@ -199,7 +213,7 @@ async function getWeatherByCityName(cityString){
     let endpoint = weatherBaseEndpoint + '&q=' + theCity ;
     let response = await fetch(endpoint);
     if(response.status !== 200) {
-        alert('city not found');
+        cityNotFound();
         return;
     }
     let weather = await response.json();
@@ -310,7 +324,7 @@ let updateForecast = (forecast) => {
 
         let forecastItem = `
             <article class="weather-forecast-item">
-                <img src=${iconUrl} alt=" " class="forecast-icon">
+                <img src=${iconUrl} draggable="false" alt=" " class="forecast-icon">
                 <h4 class="forecast-day">${dayName}</h4>
                 <p class="forecast-temperature"><span class="forecast-temperature-value">${temperature}</span> &deg;C</p>
             </article>
@@ -346,4 +360,3 @@ searchCity.addEventListener('input', async () => {
         suggestions.appendChild(option);
     }
 }) 
-
