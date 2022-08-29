@@ -103,15 +103,11 @@ body{
     width: 100%;
     text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content:center;
     flex-wrap: wrap;
 }
 .forecast-icon{
     width: 90px;
-    /* width: 10rem; */
-    /* height: auto    ; */
-    /* height: 10rem; */
-    /* max-width: 50%; */
 }
 .weather-forecast-item{
     background-color: rgba(255, 255, 255, 0.2);
@@ -121,8 +117,16 @@ body{
     box-sizing: border-box;
     min-width: 150px;
     width: calc(20% - 20px);
+    font-size: 1.5rem;
 }
 
+/* mediaquery: responsive */
+@media only screen and (max-width: 668px) {
+    .weather-condition{
+        float: left;
+        margin-left: 2px;
+    }
+}
 @media only screen and (max-width: 416px) {
     .weather-forecast-item{
         display: flex;
@@ -130,7 +134,24 @@ body{
         justify-content: space-around;
         min-width: 100%;
     }
+    .weather{
+        width: 85%;
+    }
+    .weather-forecast-item{
+        font-size: 1.35rem;
+    }
 }
+@media only screen and (max-width: 355px) {
+    .weather-forecast-item{
+        font-size: 1.3rem;
+    }
+}
+@media only screen and (max-width: 340px) {
+    .weather-forecast-item{
+        font-size: 1.25rem;
+    }
+}
+
 
 /* alert box */
 .alert-container{
@@ -152,10 +173,10 @@ body{
         transform: translateX(-10%);
     }
     80%{
-        transform: translateX(0%);
+        transform: translateX(5%);
     }
     100%{
-        transform: translateX(-10px);
+        transform: translateX(0%);
     }
 }
 .alert-container.hide{
@@ -163,10 +184,10 @@ body{
 }
 @keyframes hide_slide{
     0%{
-        transform: translateX(-10px);
+        transform: translateX(0%);
     }
     40%{
-        transform: translateX(0%);
+        transform: translateX(5%);
     }
     80%{
         transform: translateX(-10%);
@@ -185,9 +206,9 @@ body{
     width: max-content;
     max-width: 70%;
     position: fixed;
-    top: 10px;
+    top: 30px;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translateX(-50%);
     border-radius: 4px;
     border-left: 4px solid #c00384;
     font-size: 1.2rem;

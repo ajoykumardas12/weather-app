@@ -176,6 +176,11 @@ let cityNotFound = () => {
     alertContainer.classList.remove('hide');
     alertContainer.classList.add('show');
 
+    setTimeout(function(){
+        alertContainer.classList.remove('show');
+        alertContainer.classList.add('hide');
+    },5000);
+
     closeAlertButton.addEventListener("click", () => {
         alertContainer.classList.remove('show');
         alertContainer.classList.add('hide');
