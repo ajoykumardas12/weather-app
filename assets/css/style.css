@@ -23,7 +23,6 @@ body{
     margin: 0 auto;
     padding: 1rem 0;
     box-sizing: border-box;
-    white-space: nowrap;
 }
 
 
@@ -56,7 +55,7 @@ input:focus{
 
 
 .weather-your-city{
-    margin-bottom: 10px;
+    margin-bottom: .625rem;
 }
 .weather-today{
     display: flex;
@@ -73,6 +72,8 @@ input:focus{
     font-size: 2.5rem;
     font-weight: 700;
     margin: 1.2rem 0;
+    max-width: 25rem;
+    overflow-wrap: break-word;
 }
 .weather-day{
     font-size: 1.8rem;
@@ -80,6 +81,9 @@ input:focus{
     margin: 0.7rem 0;
 }
 
+.today-details p{
+    margin: 1rem 0;
+}
 .indicator::before{
     content: '';
     display: inline-block;
@@ -152,6 +156,9 @@ input:focus{
     }
     .weather{
         width: 85%;
+    }
+    .weather-your-city{
+        margin-bottom: 1.5rem;
     }
     .weather-forecast-item{
         font-size: 1.35rem;
@@ -250,7 +257,7 @@ input:focus{
 
 /* ---------scroll bar---------- */
 ::-webkit-scrollbar{
-    width: .60rem;
+    width: .70rem;
     background-color: hsl(250, 12%, 48%);
     border-radius: .5rem;
 }
@@ -264,8 +271,3 @@ input:focus{
     background-color: hsl(250, 8%, 65%);
 }
 
-
-/* city name overflow */
-.w-city{
-    max-width: 60%;
-}
