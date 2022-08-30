@@ -227,6 +227,24 @@ async function getWeatherByCityName(cityString){
     return weather;
 }
 
+//search directly from datalist - doesn't work on all browsers, eg. firefox
+const opts = document.getElementById('suggestions').childNodes;
+let eventSource = null;
+let value = '';
+
+searchCity.addEventListener('keydown', (e) => {
+  eventSource = e.key ? 'input' : 'list';
+});
+searchCity.addEventListener('input', (e) => {
+  value = e.target.value;
+  if (eventSource === 'list') {
+    // alert('CLICKED! ' + value);
+    weatherForTheCity(value);
+    // input out of focus on enter
+    searchInput.blur();
+  }
+});
+
 searchCity.addEventListener('keydown', async (e) => {
     if(e.keyCode === 13) {
         weatherForTheCity(searchCity.value);
