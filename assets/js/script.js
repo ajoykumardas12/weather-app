@@ -1,5 +1,6 @@
 let searchCity = document.querySelector('.search-city');
 let suggestions = document.querySelector('#suggestions');
+let searchInput = document.getElementById('search-city');
 
 let city = document.querySelector('.weather-city');
 let day = document.querySelector('.weather-day');
@@ -229,6 +230,8 @@ async function getWeatherByCityName(cityString){
 searchCity.addEventListener('keydown', async (e) => {
     if(e.keyCode === 13) {
         weatherForTheCity(searchCity.value);
+        // input out of focus on enter
+        searchInput.blur();
     }
 })
 

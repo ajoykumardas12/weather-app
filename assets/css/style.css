@@ -40,6 +40,18 @@ body{
 .search-city::placeholder{
     color: #fff;
 }
+/* input box */
+input:focus{
+    outline: none !important;
+}
+#search-city::-webkit-calendar-picker-indicator{
+    display:none !important;
+}
+#search-city::-webkit-search-cancel-button:hover{
+    /* might not work in all browsers */
+    cursor: pointer;
+}
+
 
 .weather-your-city{
     margin-bottom: 10px;
@@ -249,4 +261,3 @@ body{
 ::-webkit-scrollbar-thumb:hover{
     background-color: hsl(250, 8%, 65%);
 }
-
