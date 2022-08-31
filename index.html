@@ -47,20 +47,44 @@
                     <h2 class="weather-city" style="overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; ">City</h2>
                     <h4 class="weather-day">Day</h4>
                     <div class="today-details">
+                        <p class="date">Date</p>
                         <p class="indicator indicator-humidity"><span class="today-humidity-value">69</span>%</p>
-                        <p class="indicator indicator-wind"><span class="today-wind-value">East, 2.5</span>m/s</p>
+                        <!-- <p class="indicator indicator-direction"><span class="today-wind-direction">East</span></p> -->
+                        <p class="indicator indicator-wind"><span class="today-wind-value">East, 9</span> Km/h</p>
                         <p class="indicator indicator-pressure"><span class="today-pressure-value">1024</span>hPa</p>
                     </div>
                 </div>
-                <img src="assets/meteocons/fill/mist.svg" alt="weather-icon" class="weather-image" draggable="false">
-                <div class="weather-temperature">
-                    <div>
-                        <span class="temperature-value">+36</span> &deg;C
-                    </div>
+                <div class="weather-img-condition">
+                    <img src="assets/meteocons/fill/mist.svg" alt="weather-icon" class="weather-image" draggable="false">
                     <div>
                         <span class="weather-condition">Weather Condition</span>
                     </div>
                 </div>
+                <div>
+                    <div class="weather-temperature">
+                        <div>
+                            <span class="temperature-value">+36</span> &deg;C
+                        </div>
+                        <div class="weather-temperature-feels">
+                            Feels like <span class="feels-like"></span> &deg;C
+                        </div>
+                    </div>
+                    <div class="visibility-and-daytime">
+                        <div class="weather-visibility">
+                            Visibility <span><span class="visibility-value">8</span> Km</span>
+                        </div>
+                        <div class="weather-daytime">
+                            <p class="sunrise">Sunrise <span class="sunrise-value">5:34</span></p>
+                            <p class="sunset">Sunset <span class="sunset-value">5:46</span></p>
+                            <div class="daytime-calculations">
+                                <p class="day-length">Length of day <span class="day-length-value">12h 12m</span></p>
+                                <p class="remaining-daytime no-display">Remaining daylight <br> <span class="remaining-daylight-value">4h39m</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
         <div class="weather-forecast">

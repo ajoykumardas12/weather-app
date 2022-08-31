@@ -2,12 +2,12 @@
 
 * {
     font-family: 'Lato', sans-serif;
+    margin: 0;
 }
 
 body{
     width: 100%;
     height: 100vh;
-    margin: 0;
     background: #7d1fd4;
     color: #fff;
     font-weight: 300;
@@ -57,15 +57,33 @@ input:focus{
     margin-bottom: .625rem;
 }
 .weather-today{
+    height: 100%;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
-
+.weather-img-condition{
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-end; */
+    text-align: center;
+    margin:auto;
+    
+}
 .weather-image{
     width: 200px;
     /* width: 40vmin; */
     align-self: center;
+}
+.weather-condition{
+    /* text-align: center; */
+    /* align-self: center; */
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+}
+.weather-today-details{
+    font-size: 1.5rem;
 }
 .weather-city{
     font-size: 2.5rem;
@@ -81,7 +99,7 @@ input:focus{
 }
 
 .today-details p{
-    margin: 1rem 0;
+    margin: .6rem 0;
 }
 .indicator::before{
     content: '';
@@ -101,17 +119,39 @@ input:focus{
 .indicator-pressure::before{
     background-image: url(../images/pressure.png);
 }
+.indicator-direction::before{
+    background-image: url(../images/direction.svg);
+}
 
 .weather-temperature{
     font-size: 3.5rem;
     font-weight:400;
     margin-top: 0.7rem;
 }
-.weather-condition{
-    float: right;
-    font-size: 1.3rem;
-    font-weight: 400;
+.weather-temperature-feels{
+    font-size: 1.2rem;
+    font-weight: 300;
 }
+.visibility-and-daytime{
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    color: rgb(203, 201, 204);
+}
+.visibility-and-daytime span{
+    color: #fff;
+}
+.weather-visibility{
+    margin: 1rem 0;
+}
+.weather-daytime p{
+    margin: 0.5rem 0;
+}
+.daytime-calculations{
+    font-size: 1rem;
+}
+
 
 .weather-forecast{
     width: 100%;
@@ -130,8 +170,11 @@ input:focus{
     padding: 1.3rem .3rem .3rem;
     box-sizing: border-box;
     min-width: 150px;
-    width: calc(20% - 20px);
+    width: calc(20% - 1.5rem);
     font-size: 1.5rem;
+}
+.weather-forecast-item > *{
+    margin: 1rem 0;
 }
 
 /* mediaquery: responsive */
@@ -144,9 +187,16 @@ input:focus{
     .offline-wrapper{
         font-size: 1rem;
     }
-    .weather-condition{
-        float: left;
-        margin-left: 2px;
+}
+@media only screen and (max-width: 499px) {
+    .weather-temperature{
+        padding-right: 1rem;
+    }
+}
+@media only screen and (max-width: 438px) {
+    .weather-img-condition{
+        margin-right: auto;
+        margin-left: 0;
     }
 }
 @media only screen and (max-width: 416px) {
@@ -156,8 +206,12 @@ input:focus{
     .weather-forecast-item{
         display: flex;
         flex-direction: row;
+        align-items: center;
         justify-content: space-around;
         min-width: 100%;
+    }
+    .weather-forecast-item > * {
+        margin: 0.2rem 0;
     }
     .weather{
         width: 85%;

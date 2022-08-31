@@ -4,12 +4,20 @@ let searchInput = document.getElementById('search-city');
 
 let city = document.querySelector('.weather-city');
 let day = document.querySelector('.weather-day');
+let todayDate = document.querySelector('.date');
 let humidity = document.querySelector('.today-humidity-value');
 let wind = document.querySelector('.today-wind-value');
 let pressure = document.querySelector('.today-pressure-value');
 let image = document.querySelector('.weather-image');
-let temperature = document.querySelector('.temperature-value');
 let condition = document.querySelector('.weather-condition');
+let temperature = document.querySelector('.temperature-value');
+let feelsLike = document.querySelector('.feels-like');
+let visibilityValue = document.querySelector('.visibility-value');
+let sunriseValue = document.querySelector('.sunrise-value');
+let sunsetValue = document.querySelector('.sunset-value');
+let dayLengthValue = document.querySelector('.day-length-value');
+let remainingDaylightValue = document.querySelector('.remaining-daylight-value');
+let remainingDaytimeElement = document.querySelector('.remaining-daytime')
 
 let forecastBlock = document.querySelector('.weather-forecast');
 
@@ -165,11 +173,93 @@ let weatherImagesNight = [
     },
 ]
 
-function hrFromMs(duration) {
-    let hours = duration / (1000*60*60);
-    let hr = hours % 24 ;
-    return hr;
+function durationFromS(duration) {
+    let hours = Math.floor(duration / (60*60));
+    let minutes = Math.floor((duration/60) % 60);
+    let seconds = ((duration % 60) % 60);
+    let time = hours + 'h ' + minutes + 'm ';
+    return time;
 }
+
+function msToKmh(ms) {
+    let kmh = (ms*60*60)/1000;
+    return Math.round(kmh);
+}
+function windDegreeToDirection(deg) {
+    if (deg > 337.5){
+        return 'North';
+    } else if (deg > 292.5){
+        return 'North-West';
+    } else if (deg > 247.5){
+        return 'West';
+    } else if (deg > 202.5){
+        return 'South-West';
+    } else if (deg > 157.5){
+        return 'South';
+    } else if (deg > 122.5){
+        return 'South-East';
+    } else if (deg > 67.5){
+        return 'East';
+    } else if (deg > 22.5){
+        return 'North-East';
+    } else{
+        return 'North';
+    }
+}
+
+let toCapitalCase =(string) => {
+    let words = string.split(" ");
+
+    for (let i = 0; i < words.length; i++) {
+        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+
+    let joinedWords = words.join(" ");
+    return joinedWords;
+}
+
+//12hr format time from unix timestamp
+let unixToTime12 = (timestamp) => {
+    let unixTimestamp = timestamp;
+    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+    let date = new Date(unixTimestamp * 1000);
+    let h = date.getHours();
+    let m = date.getMinutes();
+    let s = date.getSeconds();
+
+    //12hr format
+    let hours = (h > 12) ? (h-12) : h;
+    //round seconds to nearest minutes
+    if(s >= 30){
+        m = +m + 1;
+    }
+    let period = (h > 12) ? 'pm' : 'am';
+    let minutes = "0" + m;
+    let formattedTime = hours + ':' + minutes.substring(minutes.length - 2) + ' ' + period ;
+    return formattedTime;
+}
+
+
+
+
+//if user is offline
+let offlineContainer = document.querySelector('.offline-wrapper');
+let offline = document.querySelector('.offline');
+let online = document.querySelector('.online');
+
+window.addEventListener('offline', () => {
+    online.classList.add('no-display');
+    offline.classList.remove('no-display');
+    offlineContainer.classList.remove('no-display');
+});
+window.addEventListener('online', () => {
+    offline.classList.add('no-display');
+    online.classList.remove('no-display');
+    setTimeout(function(){
+        offlineContainer.classList.add('no-display');
+    },2000);
+});
+
 
 //alert box - city not found
 let cityNotFound = () => {
@@ -206,7 +296,7 @@ let weatherForTheCity = async (theCity) => {
 }
 
 let init = () => {
-    weatherForTheCity('Kolkata').then(() => document.body.style.filter = 'blur(0)')
+    weatherForTheCity('Kolkata').then(() => document.body.style.filter = 'blur(0)');
 }
 init();
 
@@ -252,39 +342,54 @@ searchCity.addEventListener('keydown', async (e) => {
         searchInput.blur();
     }
 })
+let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
 let date = new Date;
+let today = date.toLocaleDateString("en-US", options);
 let updateTodayWeather = (data) => {
-    // console.log((data.dt)/1000*60*60);
-    // console.log(msToTime(data.dt));
+    console.log(data); //console
     let todayweather = data.weather[0];
     city.textContent = data.name + ', ' + data.sys.country;
     day.textContent = dayOfWeek();
+    todayDate.textContent = today;
     humidity.textContent = data.main.humidity;
     let windDirection;
     let deg = data.wind.deg;
-    if(deg > 45 && deg <= 135) {
-        windDirection = 'East';
-    } else if(deg >135 && deg <= 225) {
-        windDirection = 'South';
-    } else if(deg >225 && deg <= 315) {
-        windDirection = 'South';
-    } else {
-        windDirection = 'South';
-    }
-    wind.textContent = windDirection + ', ' + data.wind.speed;
+    windDirection = windDegreeToDirection(deg);
+    wind.textContent = windDirection + ', ' + msToKmh(data.wind.speed);
     pressure.textContent = data.main.pressure;
 
     temperature.textContent = data.main.temp > 0 ? 
                      Math.round(data.main.temp) :
                      Math.round(data.main.temp);
-
+    feelsLike.textContent = data.main.feels_like > 0 ? 
+                    Math.round(data.main.feels_like) :
+                    Math.round(data.main.feels_like);
+    
     let imgId = todayweather.id;
 
     let description = data.weather[0].description;
     let toCapitalCaseDescription = toCapitalCase(description); 
     condition.textContent = toCapitalCaseDescription;
     
+    let visibility = (data.visibility)/1000;
+    let sunrise = (unixToTime12(data.sys.sunrise));
+    let sunset = (unixToTime12(data.sys.sunset));
+    let dayLength = durationFromS(data.sys.sunset - data.sys.sunrise);
+    let currentUnixTime = (Math.floor(Date.now()/1000));
+    let remainingDaylightUnix = (data.sys.sunset - currentUnixTime);
+    let remainingDaylightTime = durationFromS(remainingDaylightUnix);
+
+    visibilityValue.textContent = visibility;
+    sunriseValue.textContent = sunrise;
+    sunsetValue.textContent = sunset;
+    dayLengthValue.textContent = dayLength;
+    remainingDaylightValue.textContent = remainingDaylightTime;
+
+    if(remainingDaylightUnix > 0){
+        remainingDaytimeElement.classList.remove('no-display');
+    }
+
     let hour = date.getHours();
     if(hour >= 6 && hour <18) {
         weatherImagesDay.forEach(obj => {
@@ -300,6 +405,7 @@ let updateTodayWeather = (data) => {
         })
     }
     
+
 }
 
 let dayOfWeek = ( dt = new Date().getTime()) => {
@@ -336,7 +442,7 @@ let updateForecast = (forecast) => {
         daysWeather = day.weather[0];
         daysWeatherId = daysWeather.id;
         let iconUrl;
-        let findIconUrl = weatherImagesDay.forEach(obj => {
+        weatherImagesDay.forEach(obj => {
             if(obj.ids.includes(daysWeatherId)) {
                 iconUrl = obj.url;
             }
@@ -359,18 +465,8 @@ let updateForecast = (forecast) => {
     })
 }
 
-let toCapitalCase =(string) => {
-    let words = string.split(" ");
 
-    for (let i = 0; i < words.length; i++) {
-        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    }
-
-    let joinedWords = words.join(" ");
-    return joinedWords;
-}
-
-
+//city suggestions
 let cityBaseEndPoint = 'https://api.teleport.org/api/cities/?search=';
 
 searchCity.addEventListener('input', async () => {
@@ -387,20 +483,3 @@ searchCity.addEventListener('input', async () => {
     }
 }) 
 
-//if user is offline
-let offlineContainer = document.querySelector('.offline-wrapper');
-let offline = document.querySelector('.offline');
-let online = document.querySelector('.online');
-
-window.addEventListener('offline', () => {
-    online.classList.add('no-display');
-    offline.classList.remove('no-display');
-    offlineContainer.classList.remove('no-display');
-});
-window.addEventListener('online', () => {
-    offline.classList.add('no-display');
-    online.classList.remove('no-display');
-    setTimeout(function(){
-        offlineContainer.classList.add('no-display');
-    },2000);
-});
