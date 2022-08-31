@@ -50,7 +50,6 @@ input:focus{
     /* might not work in all browsers - search cancel hidden because it's confusing with event on datalist (search directly clicking on datalist feature) */
     /* display: none; */
     -webkit-appearance: none;
-
 }
 
 
@@ -142,12 +141,18 @@ input:focus{
     }
 }
 @media only screen and (max-width: 668px) {
+    .offline-wrapper{
+        font-size: 1rem;
+    }
     .weather-condition{
         float: left;
         margin-left: 2px;
     }
 }
 @media only screen and (max-width: 416px) {
+    .offline-wrapper{
+        font-size: 1rem;
+    }
     .weather-forecast-item{
         display: flex;
         flex-direction: row;
@@ -167,6 +172,9 @@ input:focus{
 @media only screen and (max-width: 355px) {
     .weather-forecast-item{
         font-size: 1.3rem;
+    }
+    .offline-wrapper{
+        font-size: 0.8rem;
     }
 }
 @media only screen and (max-width: 340px) {
@@ -271,3 +279,18 @@ input:focus{
     background-color: hsl(250, 8%, 65%);
 }
 
+.offline-wrapper{
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-size: 1.3rem;
+    font-weight: 500;
+    border-radius: 2px;
+}
+.offline{
+    color: rgb(247, 185, 185);
+}
+.online{
+    color: rgb(162, 247, 162);
+}

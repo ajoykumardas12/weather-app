@@ -386,3 +386,21 @@ searchCity.addEventListener('input', async () => {
         suggestions.appendChild(option);
     }
 }) 
+
+//if user is offline
+let offlineContainer = document.querySelector('.offline-wrapper');
+let offline = document.querySelector('.offline');
+let online = document.querySelector('.online');
+
+window.addEventListener('offline', () => {
+    online.classList.add('no-display');
+    offline.classList.remove('no-display');
+    offlineContainer.classList.remove('no-display');
+});
+window.addEventListener('online', () => {
+    offline.classList.add('no-display');
+    online.classList.remove('no-display');
+    setTimeout(function(){
+        offlineContainer.classList.add('no-display');
+    },2000);
+});
