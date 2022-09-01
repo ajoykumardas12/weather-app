@@ -189,19 +189,27 @@ let tempDataC = [];
 let tempDataF = [];
 let temp = document.getElementsByClassName('temp');
 let unit = document.getElementsByClassName('unit');
+let unitKeyword = 'C';
 let radios = document.querySelectorAll('input[type=radio][name="temperature-unit"]');
 
 //change temperature unit and value on radio change
 function changeUnitValue(event) {
+    tempDataF = [];
     for(let j = 0; j < tempDataC.length; j++){
         tempDataF.push(Math.round(cToF(tempDataC[j]))); 
     }
     if (this.value === 'celcius') {
+        unitKeyword = 'C';
+        console.log(unitKeyword);
+        console.log(tempDataC);
         for(let i=0; i<temp.length; i++){
-            temp[i].textContent = tempDataC[i];
+            temp[i].textContent = Math.round(tempDataC[i]);
             unit[i].textContent = 'C';
         }
     } else if (this.value === 'fahrenheit') {
+        unitKeyword = 'F';
+        console.log(unitKeyword);
+        console.log(tempDataF);
         for(let i=0; i<temp.length; i++){
             temp[i].textContent = tempDataF[i];
             unit[i].textContent = 'F';
@@ -211,6 +219,7 @@ function changeUnitValue(event) {
 Array.prototype.forEach.call(radios, function(radio) {
     radio.addEventListener('change', changeUnitValue);
 });
+
 
 function durationFromS(duration) {
     let hours = Math.floor(duration / (60*60));
@@ -407,11 +416,18 @@ let updateTodayWeather = (data) => {
                     Math.round(data.main.feels_like) :
                     Math.round(data.main.feels_like);
 
-    tempDataC.push(temperatureC);
-    tempDataC.push(feelsLikeC);
+    tempDataC.push(data.main.temp);
+    tempDataC.push(data.main.feels_like);
 
-    temperature.textContent = temperatureC;
-    feelsLike.textContent = feelsLikeC;
+    if(unitKeyword === 'C') {
+        temperature.textContent = temperatureC;
+        feelsLike.textContent = feelsLikeC;
+    } else if(unitKeyword === 'F') {
+        temperature.textContent = Math.round(cToF(temperatureC));
+        feelsLike.textContent = Math.round(cToF(feelsLikeC));
+    }
+
+
     
     let imgId = todayweather.id;
 
@@ -498,17 +514,24 @@ let updateForecast = (forecast) => {
         let dayName = dayOfWeek(day.dt * 1000);
         let dayTemp = day.main.temp;
 
-        let temperature = dayTemp > 0 ? 
+        let forecastTemperatureC = dayTemp > 0 ? 
                      Math.round(dayTemp) :
                      Math.round(dayTemp);
+        let temperature;
 
-        tempDataC.push(temperature);
+        tempDataC.push(day.main.temp);
+
+        if(unitKeyword === 'C') {
+            temperature = forecastTemperatureC;
+        } else if(unitKeyword === 'F') {
+            temperature = Math.round(cToF(forecastTemperatureC))
+        }
 
         let forecastItem = `
             <div class="weather-forecast-item">
                 <img src=${iconUrl} draggable="false" alt=" " class="forecast-icon">
                 <h4 class="forecast-day">${dayName}</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value temp">${temperature}</span> &deg;<span class="unit">C</span></p>
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">${temperature}</span> &deg;<span class="unit">${unitKeyword}</span></p>
             </div>
         `
         forecastBlock.insertAdjacentHTML('beforeend', forecastItem);
@@ -533,3 +556,4 @@ searchCity.addEventListener('input', async () => {
     }
 }) 
 
+console.log(tempDataC);
