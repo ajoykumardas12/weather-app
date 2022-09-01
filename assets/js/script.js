@@ -24,6 +24,11 @@ let forecastBlock = document.querySelector('.weather-forecast');
 let alertContainer = document.querySelector('.alert-container');
 let closeAlertButton = document.querySelector('.close-button');
 
+let temperatureC;
+let feelsLikeC;
+let temperatureF;
+let feelsLikeF;
+
 let weatherImagesDay = [
     {
         url: 'assets/meteocons/fill/clear-day.svg',
@@ -173,6 +178,40 @@ let weatherImagesNight = [
     },
 ]
 
+let celcius = document.getElementById('celcius');
+let fahrenheit = document.getElementById('fahrenheit');
+
+function cToF(c) {
+    return (c * 1.8) + 32;
+}
+
+let tempDataC = [];
+let tempDataF = [];
+let temp = document.getElementsByClassName('temp');
+let unit = document.getElementsByClassName('unit');
+let radios = document.querySelectorAll('input[type=radio][name="temperature-unit"]');
+
+//change temperature unit and value on radio change
+function changeUnitValue(event) {
+    for(let j = 0; j < tempDataC.length; j++){
+        tempDataF.push(Math.round(cToF(tempDataC[j]))); 
+    }
+    if (this.value === 'celcius') {
+        for(let i=0; i<temp.length; i++){
+            temp[i].textContent = tempDataC[i];
+            unit[i].textContent = 'C';
+        }
+    } else if (this.value === 'fahrenheit') {
+        for(let i=0; i<temp.length; i++){
+            temp[i].textContent = tempDataF[i];
+            unit[i].textContent = 'F';
+        }
+    }
+}
+Array.prototype.forEach.call(radios, function(radio) {
+    radio.addEventListener('change', changeUnitValue);
+});
+
 function durationFromS(duration) {
     let hours = Math.floor(duration / (60*60));
     let minutes = Math.floor((duration/60) % 60);
@@ -283,6 +322,8 @@ const apiKey = 'e27527bc4535e4b18a80d6d8647e808f';
 const weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?&units=metric&appid=' + apiKey;
 
 let weatherForTheCity = async (theCity) => {
+    tempDataC = [];
+    tempDataF = [];
     let weather = await getWeatherByCityName(theCity);
     if(!weather) {
         return;
@@ -347,7 +388,7 @@ let options = { year: 'numeric', month: 'long', day: 'numeric' };
 let date = new Date;
 let today = date.toLocaleDateString("en-US", options);
 let updateTodayWeather = (data) => {
-    console.log(data); //console
+    //console.log(data); //log
     let todayweather = data.weather[0];
     city.textContent = data.name + ', ' + data.sys.country;
     day.textContent = dayOfWeek();
@@ -359,19 +400,25 @@ let updateTodayWeather = (data) => {
     wind.textContent = windDirection + ', ' + msToKmh(data.wind.speed);
     pressure.textContent = data.main.pressure;
 
-    temperature.textContent = data.main.temp > 0 ? 
-                     Math.round(data.main.temp) :
-                     Math.round(data.main.temp);
-    feelsLike.textContent = data.main.feels_like > 0 ? 
+    temperatureC = data.main.temp > 0 ? 
+                    Math.round(data.main.temp) :
+                    Math.round(data.main.temp);
+    feelsLikeC = data.main.feels_like > 0 ? 
                     Math.round(data.main.feels_like) :
                     Math.round(data.main.feels_like);
+
+    tempDataC.push(temperatureC);
+    tempDataC.push(feelsLikeC);
+
+    temperature.textContent = temperatureC;
+    feelsLike.textContent = feelsLikeC;
     
     let imgId = todayweather.id;
 
     let description = data.weather[0].description;
     let toCapitalCaseDescription = toCapitalCase(description); 
     condition.textContent = toCapitalCaseDescription;
-    
+
     let visibility = (data.visibility)/1000;
     let sunrise = (unixToTime12(data.sys.sunrise));
     let sunset = (unixToTime12(data.sys.sunset));
@@ -450,16 +497,19 @@ let updateForecast = (forecast) => {
         
         let dayName = dayOfWeek(day.dt * 1000);
         let dayTemp = day.main.temp;
+
         let temperature = dayTemp > 0 ? 
-                    '+' + Math.round(dayTemp) :
+                     Math.round(dayTemp) :
                      Math.round(dayTemp);
 
+        tempDataC.push(temperature);
+
         let forecastItem = `
-            <article class="weather-forecast-item">
+            <div class="weather-forecast-item">
                 <img src=${iconUrl} draggable="false" alt=" " class="forecast-icon">
                 <h4 class="forecast-day">${dayName}</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value">${temperature}</span> &deg;C</p>
-            </article>
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">${temperature}</span> &deg;<span class="unit">C</span></p>
+            </div>
         `
         forecastBlock.insertAdjacentHTML('beforeend', forecastItem);
     })

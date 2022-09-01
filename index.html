@@ -49,7 +49,6 @@
                     <div class="today-details">
                         <p class="date">Date</p>
                         <p class="indicator indicator-humidity"><span class="today-humidity-value">69</span>%</p>
-                        <!-- <p class="indicator indicator-direction"><span class="today-wind-direction">East</span></p> -->
                         <p class="indicator indicator-wind"><span class="today-wind-value">East, 9</span> Km/h</p>
                         <p class="indicator indicator-pressure"><span class="today-pressure-value">1024</span>hPa</p>
                     </div>
@@ -63,10 +62,10 @@
                 <div>
                     <div class="weather-temperature">
                         <div>
-                            <span class="temperature-value">+36</span> &deg;C
+                            <span class="temperature-value temp">+36</span> &deg;<span class="unit">C</span>
                         </div>
                         <div class="weather-temperature-feels">
-                            Feels like <span class="feels-like"></span> &deg;C
+                            Feels like <span class="feels-like temp"></span> &deg;<span class="unit">C</span>
                         </div>
                     </div>
                     <div class="visibility-and-daytime">
@@ -78,7 +77,7 @@
                             <p class="sunset">Sunset <span class="sunset-value">5:46</span></p>
                             <div class="daytime-calculations">
                                 <p class="day-length">Length of day <span class="day-length-value">12h 12m</span></p>
-                                <p class="remaining-daytime no-display">Remaining daylight <br> <span class="remaining-daylight-value">4h39m</span></p>
+                                <p class="remaining-daytime no-display">Remaining daylight <br class="rd-break"> <span class="remaining-daylight-value">4h39m</span></p>
                             </div>
                         </div>
                     </div>
@@ -88,33 +87,61 @@
             </div>
         </div>
         <div class="weather-forecast">
-            <article class="weather-forecast-item">
+            <div class="weather-forecast-item">
                 <img src="assets/meteocons/fill/mist.svg" alt="forecast icon" class="forecast-icon">
                 <h4 class="forecast-day">Day</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value">+35</span> &deg;C</p>
-            </article>
-            <article class="weather-forecast-item">
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">+35</span> &deg;<span class="unit">C</span></p>
+            </div>
+            <div class="weather-forecast-item">
                 <img src="assets/meteocons/fill/mist.svg" alt="forecast icon" class="forecast-icon">
                 <h4 class="forecast-day">Day</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value">+35</span> &deg;C</p>
-            </article>
-            <article class="weather-forecast-item">
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">+35</span> &deg;<span class="unit">C</span></p>
+            </div>
+            <div class="weather-forecast-item">
                 <img src="assets/meteocons/fill/mist.svg" alt="forecast icon" class="forecast-icon">
                 <h4 class="forecast-day">Day</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value">+35</span> &deg;C</p>
-            </article>
-            <article class="weather-forecast-item">
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">+35</span> &deg;<span class="unit">C</span></p>
+            </div>
+            <div class="weather-forecast-item">
                 <img src="assets/meteocons/fill/mist.svg" alt="forecast icon" class="forecast-icon">
                 <h4 class="forecast-day">Day</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value">+35</span> &deg;C</p>
-            </article>
-            <article class="weather-forecast-item">
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">+35</span> &deg;<span class="unit">C</span></p>
+            </div>
+            <div class="weather-forecast-item">
                 <img src="assets/meteocons/fill/mist.svg" alt="forecast icon" class="forecast-icon">
                 <h4 class="forecast-day">Day</h4>
-                <p class="forecast-temperature"><span class="forecast-temperature-value">+35</span> &deg;C</p>
-            </article>
+                <p class="forecast-temperature"><span class="forecast-temperature-value temp">+35</span> &deg;<span class="unit">C</span></p>
+            </div>
         </div>
     </div>
+
+    <footer>
+        <div class="footer-items">  
+            <div class="footer-flex">
+                <div class="name">
+                    WeatherLab 2022
+                </div>
+                <div class="settings">
+                    <div class="celcius">
+                        <input type="radio" name="temperature-unit" value="celcius" id="celcius" checked>
+                        <img src="assets/meteocons/line/animation-ready/celsius.svg" alt="celcius">
+                    </div>
+                    <div class="fahrenheit">
+                        <input type="radio" name="temperature-unit" value="fahrenheit" id="">
+                        <img src="assets/meteocons/line/animation-ready/fahrenheit.svg" alt="fahrenheit">
+                    </div>
+                </div>
+            </div> 
+            <div class="disclaimer">
+                    WeatherLab uses Openweathermap <a href="https://openweathermap.org/api" target="_blank">API</a> for wather data. Icons by <a href="https://bas.dev/work/meteocons" target="_blank">meteocons</a>
+                    , <a href="https://heroicons.com/" target="_blank">heroicons</a> and <a href="https://iconscout.com/unicons" target="_blank">Unicons</a>.
+            </div>
+            <div class="maker">
+                <img src="assets/icons/arrow.svg" class="icon" alt=""> Made with ❤ by <a href="https://github.com/ajoykumardas12/weather-app" target="_blank">Ajoy</a> 
+            </div>
+        </div>
+
+    </footer>
 
     <script src="assets/js/script.js"></script>
 </body>

@@ -8,7 +8,9 @@
 body{
     width: 100%;
     height: 100vh;
-    background: #7d1fd4;
+    /* background: #7d1fd4; */
+    /* background: #5c40c6; */
+    background: #553aa6;
     color: #fff;
     font-weight: 300;
     font-size: 1.5rem;
@@ -177,65 +179,7 @@ input:focus{
     margin: 1rem 0;
 }
 
-/* mediaquery: responsive */
-@media only screen and (max-width: 997px) {
-    .weather{
-        height: auto;
-    }
-}
-@media only screen and (max-width: 668px) {
-    .offline-wrapper{
-        font-size: 1rem;
-    }
-}
-@media only screen and (max-width: 499px) {
-    .weather-temperature{
-        padding-right: 1rem;
-    }
-}
-@media only screen and (max-width: 438px) {
-    .weather-img-condition{
-        margin-right: auto;
-        margin-left: 0;
-    }
-}
-@media only screen and (max-width: 416px) {
-    .offline-wrapper{
-        font-size: 1rem;
-    }
-    .weather-forecast-item{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        min-width: 100%;
-    }
-    .weather-forecast-item > * {
-        margin: 0.2rem 0;
-    }
-    .weather{
-        width: 85%;
-    }
-    .weather-your-city{
-        margin-bottom: 1.5rem;
-    }
-    .weather-forecast-item{
-        font-size: 1.35rem;
-    }
-}
-@media only screen and (max-width: 355px) {
-    .weather-forecast-item{
-        font-size: 1.3rem;
-    }
-    .offline-wrapper{
-        font-size: 0.8rem;
-    }
-}
-@media only screen and (max-width: 340px) {
-    .weather-forecast-item{
-        font-size: 1.25rem;
-    }
-}
+
 
 
 
@@ -333,6 +277,7 @@ input:focus{
     background-color: hsl(250, 8%, 65%);
 }
 
+/* offline status */
 .offline-wrapper{
     width: 100%;
     box-sizing: border-box;
@@ -347,4 +292,148 @@ input:focus{
 }
 .online{
     color: rgb(162, 247, 162);
+}
+
+
+/* ------footer------ */
+footer{
+    background: #3C3C6E;
+}
+footer a:link{
+    text-decoration: none;
+    color: #ffffff;
+}
+footer a:visited{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.footer-flex{
+    width: 60%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.settings{
+    padding-left: 5rem;
+    display: flex;
+    justify-content:center;
+}
+.celcius, .fahrenheit{
+    min-width: 3rem;
+    display: flex;
+    justify-content: space-around;
+}
+.celcius{
+    padding-right: 0.2rem;
+}
+.settings img{
+    background: rgba(255, 255, 255, 0.2);
+    max-width: 2rem;
+    border-radius: 3px;
+}
+
+.disclaimer{
+    font-size: .9rem;
+    text-align: center;
+    padding: 0 0.5em;
+}
+.maker{
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.3rem;
+}
+.maker a:link{
+    color: #3e0b6b;
+}
+.maker a:visited{
+    color: #ad5bf5;
+}
+.icon{
+    text-align: center;
+    /* width: rem; */
+    height: 0.9rem;
+}
+
+
+
+
+
+/* ------mediaquery: responsive------ */
+@media only screen and (max-width: 997px) {
+    .weather{
+        height: auto;
+    }
+}
+@media only screen and (max-width: 668px) {
+    .offline-wrapper{
+        font-size: 1rem;
+    }
+    .footer-flex{
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem 0;
+    }
+    .settings{
+        padding-left: 0;
+    }
+}
+@media only screen and (max-width: 499px) {
+    .weather-temperature{
+        padding-right: 1rem;
+    }
+}
+@media only screen and (max-width: 444px) {
+    .rd-break{
+        display: none;
+    }
+    .weather-today{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .weather-img-condition{
+        margin-right: auto;
+        margin-left: 0;
+    }
+}
+ 
+@media only screen and (max-width: 416px) {
+    .offline-wrapper{
+        font-size: 1rem;
+    }
+    .weather-forecast-item{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        min-width: 100%;
+    }
+    .weather-forecast-item > * {
+        margin: 0.2rem 0;
+    }
+    .weather{
+        width: 85%;
+    }
+    .weather-your-city{
+        margin-bottom: 1.5rem;
+    }
+    .weather-forecast-item{
+        font-size: 1.35rem;
+    }
+}
+@media only screen and (max-width: 355px) {
+    .weather-forecast-item{
+        font-size: 1.3rem;
+    }
+    .offline-wrapper{
+        font-size: 0.8rem;
+    }
+}
+@media only screen and (max-width: 340px) {
+    .weather-forecast-item{
+        font-size: 1.25rem;
+    }
 }
