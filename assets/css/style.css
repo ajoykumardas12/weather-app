@@ -322,6 +322,7 @@ footer a:visited{
     display: flex;
     justify-content:center;
 }
+
 .celcius, .fahrenheit{
     min-width: 3rem;
     display: flex;
@@ -347,15 +348,18 @@ footer a:visited{
     padding: 0.3rem;
 }
 .maker a:link{
-    color: #3e0b6b;
+    color: #9c48e6;
 }
 .maker a:visited{
-    color: #ad5bf5;
+    color: #a07bc0;
+}
+.heart{
+    color: rgb(211, 207, 214);
 }
 .icon{
     text-align: center;
     /* width: rem; */
-    height: 0.9rem;
+    height: 0.75rem;
 }
 
 

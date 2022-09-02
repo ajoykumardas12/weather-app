@@ -200,16 +200,14 @@ function changeUnitValue(event) {
     }
     if (this.value === 'celcius') {
         unitKeyword = 'C';
-        console.log(unitKeyword);
-        console.log(tempDataC);
+        // console.log(unitKeyword);
         for(let i=0; i<temp.length; i++){
             temp[i].textContent = Math.round(tempDataC[i]);
             unit[i].textContent = 'C';
         }
     } else if (this.value === 'fahrenheit') {
         unitKeyword = 'F';
-        console.log(unitKeyword);
-        console.log(tempDataF);
+        // console.log(unitKeyword);
         for(let i=0; i<temp.length; i++){
             temp[i].textContent = tempDataF[i];
             unit[i].textContent = 'F';
@@ -555,5 +553,3 @@ searchCity.addEventListener('input', async () => {
         suggestions.appendChild(option);
     }
 }) 
-
-console.log(tempDataC);

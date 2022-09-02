@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>WeatherLab</title>
     <link rel="stylesheet" href="assets/css/style.css">
-
+    <link rel="shortcut icon" href="assets/images/favicon_mogra.ico" type="image/x-icon">
 </head>
 <body>
     <div class="alert-container no-display">
@@ -122,14 +122,14 @@
                     WeatherLab 2022
                 </div>
                 <div class="settings">
-                    <div class="celcius">
+                    <label class="celcius">
                         <input type="radio" name="temperature-unit" value="celcius" id="celcius" checked>
                         <img src="assets/meteocons/line/animation-ready/celsius.svg" alt="celcius">
-                    </div>
-                    <div class="fahrenheit">
-                        <input type="radio" name="temperature-unit" value="fahrenheit" id="">
+                    </label>
+                    <label class="fahrenheit">
+                        <input type="radio" name="temperature-unit" value="fahrenheit" id="fahrenheit">
                         <img src="assets/meteocons/line/animation-ready/fahrenheit.svg" alt="fahrenheit">
-                    </div>
+                    </label>
                 </div>
             </div> 
             <div class="disclaimer">
@@ -137,10 +137,9 @@
                     , <a href="https://heroicons.com/" target="_blank">heroicons</a> and <a href="https://iconscout.com/unicons" target="_blank">Unicons</a>.
             </div>
             <div class="maker">
-                <img src="assets/icons/arrow.svg" class="icon" alt=""> Made with ❤ by <a href="https://github.com/ajoykumardas12/weather-app" target="_blank">Ajoy</a> 
+                <img src="assets/icons/arrow.svg" class="icon" alt=""> Made with <span class="heart">♥</span> by <a href="https://github.com/ajoykumardas12/weather-app" target="_blank">Ajoy</a> 
             </div>
         </div>
-
     </footer>
 
     <script src="assets/js/script.js"></script>
