@@ -313,10 +313,9 @@ footer a:visited{
     margin: auto;
     display: flex;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 1rem 0 0.7rem;
     font-size: 1.5rem;
 }
-
 .settings{
     padding-left: 5rem;
     display: flex;
@@ -337,6 +336,32 @@ footer a:visited{
     border-radius: 3px;
 }
 
+.homecity{
+    text-align: center;
+    font-size: 1.2rem;
+    padding-bottom: 0.8rem;
+}
+.homecity button{
+    background-color: rgba(255, 255, 255, 0.2);
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+.home-icon{
+    width: 1rem;
+    margin-top: 0.2rem;
+    fill: #fff;
+}
+.home-icon:hover{
+    fill: #3e0b6b;
+}
+.set{
+    fill: #502179;
+}
 .disclaimer{
     font-size: .9rem;
     text-align: center;
@@ -346,6 +371,7 @@ footer a:visited{
     font-size: 1rem;
     text-align: center;
     padding: 0.3rem;
+    vertical-align: middle;
 }
 .maker a:link{
     color: #9c48e6;
@@ -353,16 +379,15 @@ footer a:visited{
 .maker a:visited{
     color: #a07bc0;
 }
+ion-icon{
+    vertical-align:text-bottom;
+}
 .heart{
     color: rgb(211, 207, 214);
 }
-.icon{
-    text-align: center;
-    /* width: rem; */
-    height: 0.75rem;
+.ajoy{
+    font-weight: 500;
 }
-
-
 
 
 

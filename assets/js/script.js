@@ -24,10 +24,15 @@ let forecastBlock = document.querySelector('.weather-forecast');
 let alertContainer = document.querySelector('.alert-container');
 let closeAlertButton = document.querySelector('.close-button');
 
+let currentCityBlock = document.querySelector('.current-city');
+
 let temperatureC;
 let feelsLikeC;
 let temperatureF;
 let feelsLikeF;
+
+let currentCity;
+let initialHomeCity = 'Kolkata';
 
 let weatherImagesDay = [
     {
@@ -178,6 +183,25 @@ let weatherImagesNight = [
     },
 ]
 
+//set Home City
+function setHomecity(){
+    const homeCity = currentCity;
+    localStorage.setItem('home-city-wlab', homeCity);
+    console.log(localStorage.getItem('home-city-wlab'));
+}
+
+let homeCityButton = document.getElementById('set-homecity');
+homeCityButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setHomecity();
+});
+
+let selectedHomeCity = localStorage.getItem('home-city-wlab');
+if(selectedHomeCity){
+    initialHomeCity = selectedHomeCity;
+}
+
+//celcius fahrenheit conversion
 let celcius = document.getElementById('celcius');
 let fahrenheit = document.getElementById('fahrenheit');
 
@@ -343,10 +367,10 @@ let weatherForTheCity = async (theCity) => {
     updateForecast(forecasts);
 }
 
-let init = () => {
-    weatherForTheCity('Kolkata').then(() => document.body.style.filter = 'blur(0)');
+let init = (initialHomeCity) => {
+    weatherForTheCity(initialHomeCity).then(() => document.body.style.filter = 'blur(0)');
 }
-init();
+init(initialHomeCity);
 
 async function getWeatherByCityName(cityString){
     if(cityString.includes(',')) {
@@ -397,7 +421,10 @@ let today = date.toLocaleDateString("en-US", options);
 let updateTodayWeather = (data) => {
     //console.log(data); //log
     let todayweather = data.weather[0];
-    city.textContent = data.name + ', ' + data.sys.country;
+    currentCity = data.name + ', ' + data.sys.country;
+    console.log(currentCity);
+    city.textContent = currentCity;
+    currentCityBlock.textContent = currentCity;
     day.textContent = dayOfWeek();
     todayDate.textContent = today;
     humidity.textContent = data.main.humidity;
@@ -466,7 +493,12 @@ let updateTodayWeather = (data) => {
         })
     }
     
-
+    if(currentCity === initialHomeCity)
+    {
+        document.querySelector('.home-icon').classList.add('set');
+    } else{
+        document.querySelector('.home-icon').classList.remove('set');
+    }
 }
 
 let dayOfWeek = ( dt = new Date().getTime()) => {
@@ -539,7 +571,6 @@ let updateForecast = (forecast) => {
 
 //city suggestions
 let cityBaseEndPoint = 'https://api.teleport.org/api/cities/?search=';
-
 searchCity.addEventListener('input', async () => {
     let endPoint = cityBaseEndPoint + searchCity.value;
     let result = await (await fetch(endPoint)).json();
