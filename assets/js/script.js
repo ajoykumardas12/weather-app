@@ -1,3 +1,4 @@
+//dom elements
 let searchCity = document.querySelector('.search-city');
 let suggestions = document.querySelector('#suggestions');
 let searchInput = document.getElementById('search-city');
@@ -26,6 +27,12 @@ let closeAlertButton = document.querySelector('.close-button');
 
 let currentCityBlock = document.querySelector('.current-city');
 
+let celcius = document.getElementById('celcius');
+let fahrenheit = document.getElementById('fahrenheit');
+
+let homeCityButton = document.getElementById('set-homecity');
+
+//variables
 let temperatureC;
 let feelsLikeC;
 let temperatureF;
@@ -34,6 +41,7 @@ let feelsLikeF;
 let currentCity;
 let initialHomeCity = 'Kolkata';
 
+//weather images for day and night
 let weatherImagesDay = [
     {
         url: 'assets/meteocons/fill/clear-day.svg',
@@ -187,13 +195,12 @@ let weatherImagesNight = [
 function setHomecity(){
     const homeCity = currentCity;
     localStorage.setItem('home-city-wlab', homeCity);
-    console.log(localStorage.getItem('home-city-wlab'));
 }
 
-let homeCityButton = document.getElementById('set-homecity');
 homeCityButton.addEventListener("click", (e) => {
     e.stopPropagation();
     setHomecity();
+    document.querySelector('.home-icon').classList.add('set');
 });
 
 let selectedHomeCity = localStorage.getItem('home-city-wlab');
@@ -202,13 +209,11 @@ if(selectedHomeCity){
 }
 
 //celcius fahrenheit conversion
-let celcius = document.getElementById('celcius');
-let fahrenheit = document.getElementById('fahrenheit');
-
 function cToF(c) {
     return (c * 1.8) + 32;
 }
 
+//change temperature unit and value on radio change
 let tempDataC = [];
 let tempDataF = [];
 let temp = document.getElementsByClassName('temp');
@@ -216,7 +221,6 @@ let unit = document.getElementsByClassName('unit');
 let unitKeyword = 'C';
 let radios = document.querySelectorAll('input[type=radio][name="temperature-unit"]');
 
-//change temperature unit and value on radio change
 function changeUnitValue(event) {
     tempDataF = [];
     for(let j = 0; j < tempDataC.length; j++){
@@ -224,14 +228,12 @@ function changeUnitValue(event) {
     }
     if (this.value === 'celcius') {
         unitKeyword = 'C';
-        // console.log(unitKeyword);
         for(let i=0; i<temp.length; i++){
             temp[i].textContent = Math.round(tempDataC[i]);
             unit[i].textContent = 'C';
         }
     } else if (this.value === 'fahrenheit') {
         unitKeyword = 'F';
-        // console.log(unitKeyword);
         for(let i=0; i<temp.length; i++){
             temp[i].textContent = tempDataF[i];
             unit[i].textContent = 'F';
@@ -242,7 +244,7 @@ Array.prototype.forEach.call(radios, function(radio) {
     radio.addEventListener('change', changeUnitValue);
 });
 
-
+//seconds to h:m
 function durationFromS(duration) {
     let hours = Math.floor(duration / (60*60));
     let minutes = Math.floor((duration/60) % 60);
@@ -250,11 +252,12 @@ function durationFromS(duration) {
     let time = hours + 'h ' + minutes + 'm ';
     return time;
 }
-
+//m/s to Km/h
 function msToKmh(ms) {
     let kmh = (ms*60*60)/1000;
     return Math.round(kmh);
 }
+//get wind direction from degree
 function windDegreeToDirection(deg) {
     if (deg > 337.5){
         return 'North';
@@ -276,7 +279,7 @@ function windDegreeToDirection(deg) {
         return 'North';
     }
 }
-
+//convert string to CapitalCase
 let toCapitalCase =(string) => {
     let words = string.split(" ");
 
@@ -310,9 +313,7 @@ let unixToTime12 = (timestamp) => {
 }
 
 
-
-
-//if user is offline
+//if user is offline, notify
 let offlineContainer = document.querySelector('.offline-wrapper');
 let offline = document.querySelector('.offline');
 let online = document.querySelector('.online');
@@ -329,7 +330,6 @@ window.addEventListener('online', () => {
         offlineContainer.classList.add('no-display');
     },2000);
 });
-
 
 //alert box - city not found
 let cityNotFound = () => {
@@ -348,7 +348,7 @@ let cityNotFound = () => {
     });
 };
 
-
+//get weather data from api
 const apiKey = 'e27527bc4535e4b18a80d6d8647e808f';
 const weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?&units=metric&appid=' + apiKey;
 
@@ -367,11 +367,6 @@ let weatherForTheCity = async (theCity) => {
     updateForecast(forecasts);
 }
 
-let init = (initialHomeCity) => {
-    weatherForTheCity(initialHomeCity).then(() => document.body.style.filter = 'blur(0)');
-}
-init(initialHomeCity);
-
 async function getWeatherByCityName(cityString){
     if(cityString.includes(',')) {
         theCity = cityString.substring(0, cityString.indexOf(',')) + cityString.substring(cityString.lastIndexOf(','));
@@ -388,6 +383,27 @@ async function getWeatherByCityName(cityString){
 
     return weather;
 }
+//load weather for initial city either homecity or default city
+let init = (initialHomeCity) => {
+    weatherForTheCity(initialHomeCity).then(() => document.body.style.filter = 'blur(0)');
+}
+init(initialHomeCity);
+
+//city suggestions in datalist
+let cityBaseEndPoint = 'https://api.teleport.org/api/cities/?search=';
+searchCity.addEventListener('input', async () => {
+    let endPoint = cityBaseEndPoint + searchCity.value;
+    let result = await (await fetch(endPoint)).json();
+    suggestions.innerHTML = '';
+    let cities = result._embedded['city:search-results'];
+    let length = cities.length > 5 ? 5 : cities.length;
+
+    for(let i = 0; i < length; i++){
+        let option = document.createElement('option');
+        option.value = cities[i].matching_full_name;
+        suggestions.appendChild(option);
+    }
+}) 
 
 //search directly from datalist - doesn't work on all browsers, eg. firefox
 const opts = document.getElementById('suggestions').childNodes;
@@ -406,7 +422,7 @@ searchCity.addEventListener('input', (e) => {
     searchInput.blur();
   }
 });
-
+//search by 'enter'
 searchCity.addEventListener('keydown', async (e) => {
     if(e.keyCode === 13) {
         weatherForTheCity(searchCity.value);
@@ -414,15 +430,21 @@ searchCity.addEventListener('keydown', async (e) => {
         searchInput.blur();
     }
 })
+//get today date
 let options = { year: 'numeric', month: 'long', day: 'numeric' };
-
 let date = new Date;
 let today = date.toLocaleDateString("en-US", options);
+//get weekday 
+let dayOfWeek = ( dt = new Date().getTime()) => {
+    let options = {  weekday: 'long'};
+    let weekDay = new Date(dt).toLocaleString('en-us', options);
+    return weekDay; 
+}
+
+//update weather
 let updateTodayWeather = (data) => {
-    //console.log(data); //log
     let todayweather = data.weather[0];
     currentCity = data.name + ', ' + data.sys.country;
-    console.log(currentCity);
     city.textContent = currentCity;
     currentCityBlock.textContent = currentCity;
     day.textContent = dayOfWeek();
@@ -452,8 +474,6 @@ let updateTodayWeather = (data) => {
         feelsLike.textContent = Math.round(cToF(feelsLikeC));
     }
 
-
-    
     let imgId = todayweather.id;
 
     let description = data.weather[0].description;
@@ -501,13 +521,7 @@ let updateTodayWeather = (data) => {
     }
 }
 
-let dayOfWeek = ( dt = new Date().getTime()) => {
-    let options = {  weekday: 'long'};
-    let weekDay = new Date(dt).toLocaleString('en-us', options);
-    return weekDay; 
-}
-
-
+//get forecast data from api
 let forecastBaseEndPoint = 'https://api.openweathermap.org/data/2.5/forecast?&units=metric&appid=' + apiKey;
 
 async function getForecastByCityId(id) {
@@ -517,6 +531,7 @@ async function getForecastByCityId(id) {
     let forecastList = forecast.list;
     let daily = [];
 
+    //filter forecast data for 12pm each day
     forecastList.forEach( day => {
         let date = new Date(day.dt_txt.replace(' ', 'T'));
         let hours = date.getHours();
@@ -529,6 +544,7 @@ async function getForecastByCityId(id) {
     return daily;
 }
 
+//update forecast data
 let updateForecast = (forecast) => {
     forecastBlock.innerHTML = ' ';
     forecast.forEach( day => {
@@ -567,20 +583,3 @@ let updateForecast = (forecast) => {
         forecastBlock.insertAdjacentHTML('beforeend', forecastItem);
     })
 }
-
-
-//city suggestions
-let cityBaseEndPoint = 'https://api.teleport.org/api/cities/?search=';
-searchCity.addEventListener('input', async () => {
-    let endPoint = cityBaseEndPoint + searchCity.value;
-    let result = await (await fetch(endPoint)).json();
-    suggestions.innerHTML = '';
-    let cities = result._embedded['city:search-results'];
-    let length = cities.length > 5 ? 5 : cities.length;
-
-    for(let i = 0; i < length; i++){
-        let option = document.createElement('option');
-        option.value = cities[i].matching_full_name;
-        suggestions.appendChild(option);
-    }
-}) 
